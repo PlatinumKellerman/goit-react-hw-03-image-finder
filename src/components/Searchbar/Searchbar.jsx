@@ -1,17 +1,13 @@
 import { Component } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { FcSearch } from 'react-icons/fc';
 // import PropTypes from 'prop-types';
-import { Formik, Form } from 'formik';
-// import * as yup from 'yup';
 
 export class Searchbar extends Component {
   state = {
     pictureName: '',
   };
-
-  // const validationSchema = yup.object().shape({
-  //   name: yup.string().required('This field cannot be empty')
-  // });
 
   handlePictureNameChagne = e => {
     this.setState({ pictureName: e.currentTarget.value.toLowerCase() });
@@ -19,6 +15,10 @@ export class Searchbar extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    if (this.state.pictureName.trim() === '') {
+      toast.error('This field cannot be empty ;)');
+      return;
+    }
     this.props.onSubmit(this.state.pictureName);
     this.setState({ pictureName: '' });
   };
@@ -27,25 +27,20 @@ export class Searchbar extends Component {
     return (
       <>
         <header>
-          <Formik
-            initialValues={{ name: '' }}
-            // validationSchema={schema}
-          >
-            <Form onSubmit={this.handleSubmit}>
-              <button type="submit">
-                <FcSearch height="16" width="16" />
-                Search
-              </button>
-              <input
-                name="name"
-                type="text"
-                autoComplete="off"
-                autoFocus
-                placeholder="Search images and photos"
-                onChange={this.handlePictureNameChagne}
-              />
-            </Form>
-          </Formik>
+          <form onSubmit={this.handleSubmit}>
+            <button type="submit">
+              <FcSearch height="16" width="16" />
+              Search
+            </button>
+            <input
+              name="name"
+              type="text"
+              autoComplete="off"
+              autoFocus
+              placeholder="Search images and photos"
+              onChange={this.handlePictureNameChagne}
+            />
+          </form>
         </header>
       </>
     );

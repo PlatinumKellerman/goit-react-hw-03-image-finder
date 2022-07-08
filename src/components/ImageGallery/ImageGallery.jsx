@@ -6,7 +6,7 @@ export class ImageGallery extends Component {
     return (
       <>
         <ul>
-          <ImageGalleryItem pictureName={this.props.pictureName} />
+          <ImageGalleryItem handlePicture={this.handlePicture} />
         </ul>
       </>
     );

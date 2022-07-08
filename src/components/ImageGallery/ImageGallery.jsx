@@ -3,7 +3,6 @@ import { ImageGalleryItem } from '../ImageGalleryItem/index';
 
 export class ImageGallery extends Component {
   render() {
-    console.log(this.props.pictureName);
     return (
       <>
         <ul>

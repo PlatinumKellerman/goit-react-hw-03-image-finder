@@ -1,17 +1,19 @@
 import { Component } from 'react';
-// import axios from 'axios';
-// import PropTypes from 'prop-types';
+import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled.js';
 
 export class ImageGalleryItem extends Component {
-  // state = {
-  //   picturesArray: [],
-  //   isLoading: false,
-  // };
-
   render() {
     const picturesArray = this.props.pics;
-    return picturesArray.map(pic => {
-      return <li key={pic.id}>{pic.id}</li>;
+    return picturesArray.map(picture => {
+      return (
+        <GalleryItem key={picture.id}>
+          <GalleryImage
+            src={picture.webformatURL}
+            alt={picture.tags}
+            loading="lazy"
+          ></GalleryImage>
+        </GalleryItem>
+      );
     });
   }
 }

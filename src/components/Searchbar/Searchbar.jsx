@@ -2,6 +2,12 @@ import { Component } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FcSearch } from 'react-icons/fc';
+import {
+  StyledHeader,
+  SearchForm,
+  SearchFormButton,
+  SearchFormInput,
+} from './Searchbar.styled';
 // import PropTypes from 'prop-types';
 
 export class Searchbar extends Component {
@@ -26,13 +32,12 @@ export class Searchbar extends Component {
   render() {
     return (
       <>
-        <header>
-          <form onSubmit={this.handleSubmit}>
-            <button type="submit">
-              <FcSearch height="16" width="16" />
-              Search
-            </button>
-            <input
+        <StyledHeader>
+          <SearchForm onSubmit={this.handleSubmit}>
+            <SearchFormButton type="submit">
+              <FcSearch size={32} />
+            </SearchFormButton>
+            <SearchFormInput
               name="name"
               type="text"
               autoComplete="off"
@@ -40,8 +45,8 @@ export class Searchbar extends Component {
               placeholder="Search images and photos"
               onChange={this.handlePictureNameChagne}
             />
-          </form>
-        </header>
+          </SearchForm>
+        </StyledHeader>
       </>
     );
   }

@@ -1,14 +1,12 @@
-import { Component } from 'react';
 import { ImageGalleryItem } from '../ImageGalleryItem/index';
+import { GalleryList } from './ImageGallery.styled';
 
-export class ImageGallery extends Component {
-  render() {
-    return (
-      <div>
-        <ul>
-          <ImageGalleryItem pics={this.props.pics} />
-        </ul>
-      </div>
-    );
-  }
-}
+export const ImageGallery = props => {
+  return (
+    <>
+      <GalleryList>
+        <ImageGalleryItem pics={props.pics} />
+      </GalleryList>
+    </>
+  );
+};

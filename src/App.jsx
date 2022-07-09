@@ -30,22 +30,30 @@ export class App extends Component {
     const prevImgName = prevState.pictureName;
     const currentImgName = this.state.pictureName;
     if (currentImgName !== prevImgName) {
+      this.setState({ isLoading: true });
       this.fetchPictures(currentImgName);
-      console.log(this.fetchPictures(currentImgName));
+      // console.log(prevImgName);
+      // console.log(this.state.pictureName);
+      // console.log(this.state.picturesArray);
     }
   }
 
   fetchPictures = () => {
     const currentImgName = this.state.pictureName;
-    getPic(currentImgName).then(pics => this.setState({ picturesArray: pics }));
+    getPic(currentImgName)
+      .then(pics => this.setState({ picturesArray: pics }))
+      .catch(error => console.log(error))
+      .finally(() => this.setState({ isLoading: false }));
   };
 
   render() {
+    console.log(this.state.isLoading);
     return (
       <div>
         <Searchbar onSubmit={this.handleImageNameSubmit} />
-        {this.state.picturesArray.lenth > 0 && (
-          <ImageGallery handlePicture={this.handlePicture} />
+        {this.state.isLoading && <div>L O A D I N G</div>}
+        {this.state.picturesArray.length > 0 && (
+          <ImageGallery pics={this.state.picturesArray} />
         )}
         <ToastContainer autoClose={2000} />
       </div>

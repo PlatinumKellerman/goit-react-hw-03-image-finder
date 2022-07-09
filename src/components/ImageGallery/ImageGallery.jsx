@@ -4,11 +4,11 @@ import { ImageGalleryItem } from '../ImageGalleryItem/index';
 export class ImageGallery extends Component {
   render() {
     return (
-      <>
+      <div>
         <ul>
-          <ImageGalleryItem handlePicture={this.handlePicture} />
+          <ImageGalleryItem pics={this.props.pics} />
         </ul>
-      </>
+      </div>
     );
   }
 }

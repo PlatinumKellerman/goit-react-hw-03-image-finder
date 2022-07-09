@@ -9,10 +9,9 @@ export class ImageGalleryItem extends Component {
   // };
 
   render() {
-    return (
-      <>
-        <li>PICTURE</li>
-      </>
-    );
+    const picturesArray = this.props.pics;
+    return picturesArray.map(pic => {
+      return <li key={pic.id}>{pic.id}</li>;
+    });
   }
 }

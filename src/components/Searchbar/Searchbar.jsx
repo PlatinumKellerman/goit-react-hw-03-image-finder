@@ -13,6 +13,7 @@ import {
 export class Searchbar extends Component {
   state = {
     pictureName: '',
+    currentPage: 1,
   };
 
   handlePictureNameChagne = e => {
@@ -25,8 +26,7 @@ export class Searchbar extends Component {
       toast.error('This field cannot be empty ;)');
       return;
     }
-    this.props.onSubmit(this.state.pictureName);
-    this.setState({ pictureName: '' });
+    this.props.onSubmit(this.state.pictureName, this.state.currentPage);
     e.target.reset();
   };
 

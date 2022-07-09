@@ -13,18 +13,27 @@ export class App extends Component {
     isLoading: false,
     currentPage: 1,
     totalPages: null,
+    totalHits: null,
   };
 
-  handleImageNameSubmit = pictureName => {
-    this.setState({ pictureName });
+  handleImageNameSubmit = (pictureName, currentPage) => {
+    this.setState({ pictureName, currentPage });
+  };
+
+  loadMore = () => {
+    this.setState(prevState => ({
+      currentPage: prevState.currentPage + 1,
+    }));
   };
 
   componentDidUpdate(prevProps, prevState) {
     const prevImgName = prevState.pictureName;
     const currentImgName = this.state.pictureName;
-    if (currentImgName !== prevImgName) {
+    const prevPage = prevState.currentPage;
+    const currentPage = this.state.currentPage;
+    if (currentImgName !== prevImgName || prevPage !== currentPage) {
       this.setState({ isLoading: true });
-      this.fetchPictures(currentImgName);
+      this.fetchPictures();
     }
   }
 
@@ -36,6 +45,7 @@ export class App extends Component {
         this.setState({
           picturesArray: pics,
           totalPages: options.params.totalPages,
+          totalHits: options.params.totalHits,
         })
       )
       .catch(error => console.log(error))
@@ -43,15 +53,17 @@ export class App extends Component {
   };
 
   render() {
-    console.log(this.state.totalPages);
     return (
       <AppContainer>
         <Searchbar onSubmit={this.handleImageNameSubmit} />
         {this.state.isLoading && <Loader />}
         {this.state.picturesArray.length > 0 && (
-          <ImageGallery pics={this.state.picturesArray} />
+          <ImageGallery
+            pics={this.state.picturesArray}
+            loadMore={this.loadMore}
+          />
         )}
-        <ToastContainer autoClose={2000} />
+        <ToastContainer autoClose={3000} />
       </AppContainer>
     );
   }

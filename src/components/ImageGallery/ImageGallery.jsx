@@ -8,7 +8,7 @@ export const ImageGallery = props => {
       <GalleryList>
         <ImageGalleryItem pics={props.pics} />
       </GalleryList>
-      {props.pics.length >= 12 && <LoadMoreButton />}
+      {props.pics.length === 12 && <LoadMoreButton loadMore={props.loadMore} />}
     </>
   );
 };

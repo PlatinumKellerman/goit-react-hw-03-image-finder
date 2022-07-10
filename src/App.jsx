@@ -5,6 +5,8 @@ import { Searchbar } from './components/Searchbar/index';
 import { ImageGallery } from './components/ImageGallery/index';
 import { getPic, options } from './components/services/Api';
 import { Loader } from 'components/Loader/index';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class App extends Component {
   state = {
@@ -14,16 +16,22 @@ export class App extends Component {
     currentPage: 1,
     totalPages: null,
     totalHits: null,
+    largeImageURL: '',
   };
 
-  handleImageNameSubmit = (pictureName, currentPage) => {
-    this.setState({ pictureName, currentPage });
+  handleImageNameSubmit = pictureName => {
+    if (pictureName !== this.state.pictureName) {
+      this.setState({ pictureName, currentPage: 1, picturesArray: [] });
+    }
   };
 
   loadMore = () => {
     this.setState(prevState => ({
       currentPage: prevState.currentPage + 1,
     }));
+    if (this.state.currentPage === this.state.totalPages - 1) {
+      toast.error('End of gallery');
+    }
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -40,29 +48,38 @@ export class App extends Component {
   fetchPictures = () => {
     const currentImgName = this.state.pictureName;
     const currentPage = this.state.currentPage;
+
     getPic(currentImgName, currentPage)
-      .then(pics =>
-        this.setState({
-          picturesArray: pics,
+      .then(pics => {
+        this.setState(prevState => ({
+          picturesArray: [...prevState.picturesArray, ...pics],
           totalPages: options.params.totalPages,
           totalHits: options.params.totalHits,
-        })
-      )
+        }));
+        const largeImg = pics.map(pic => {
+          return pic.largeImageURL;
+        });
+        this.setState({ largeImageURL: largeImg });
+        console.log(this.state.largeImageURL);
+      })
       .catch(error => console.log(error))
       .finally(() => this.setState({ isLoading: false }));
   };
 
   render() {
+    const { totalHits, picturesArray, totalPages } = this.state;
     return (
       <AppContainer>
         <Searchbar onSubmit={this.handleImageNameSubmit} />
-        {this.state.isLoading && <Loader />}
         {this.state.picturesArray.length > 0 && (
           <ImageGallery
-            pics={this.state.picturesArray}
+            pics={picturesArray}
             loadMore={this.loadMore}
+            totalHits={totalHits}
+            totalPages={totalPages}
           />
         )}
+        {this.state.isLoading && <Loader />}
         <ToastContainer autoClose={3000} />
       </AppContainer>
     );

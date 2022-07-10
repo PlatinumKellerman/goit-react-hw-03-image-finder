@@ -24,19 +24,15 @@ export class ImageGallery extends Component {
 
   render() {
     const NumberOfPics = this.props.pics.length;
-    const totalHits = this.props.totalHits;
     const largeImageURL = this.state.largeImageURL;
-    const tags = this.props.tags;
+    const { loadMore, pics, tags, totalHits } = this.props;
     return (
       <>
         <GalleryList>
-          <ImageGalleryItem
-            pics={this.props.pics}
-            onModalOpen={this.onModalOpen}
-          />
+          <ImageGalleryItem pics={pics} onModalOpen={this.onModalOpen} />
         </GalleryList>
         {NumberOfPics >= 12 && NumberOfPics < totalHits && (
-          <LoadMoreButton loadMore={this.props.loadMore} />
+          <LoadMoreButton loadMore={loadMore} />
         )}
         {this.state.isOpen && (
           <Modal
@@ -51,10 +47,13 @@ export class ImageGallery extends Component {
 }
 
 ImageGallery.propTypes = {
-  pics: PropTypes.array.isRequired,
-  onModalOpen: PropTypes.func,
-  loadMore: PropTypes.func,
-  onClose: PropTypes.func,
-  largeImageURL: PropTypes.string,
-  tags: PropTypes.string,
+  pics: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      tags: PropTypes.string.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+    })
+  ),
+  loadMore: PropTypes.func.isRequired,
 };

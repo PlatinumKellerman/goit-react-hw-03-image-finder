@@ -2,6 +2,7 @@ import { ImageGalleryItem } from '../ImageGalleryItem/index';
 import { GalleryList } from './ImageGallery.styled';
 import { LoadMoreButton } from '../LoadMoreButton/index';
 import { Modal } from '../Modal/index';
+import PropTypes from 'prop-types';
 import { Component } from 'react';
 
 export class ImageGallery extends Component {
@@ -23,7 +24,6 @@ export class ImageGallery extends Component {
 
   render() {
     const NumberOfPics = this.props.pics.length;
-
     const totalHits = this.props.totalHits;
     const largeImageURL = this.state.largeImageURL;
     const tags = this.props.tags;
@@ -49,3 +49,12 @@ export class ImageGallery extends Component {
     );
   }
 }
+
+ImageGallery.propTypes = {
+  pics: PropTypes.array.isRequired,
+  onModalOpen: PropTypes.func,
+  loadMore: PropTypes.func,
+  onClose: PropTypes.func,
+  largeImageURL: PropTypes.string,
+  tags: PropTypes.string,
+};

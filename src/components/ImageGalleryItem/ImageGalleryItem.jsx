@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled.js';
 
 export class ImageGalleryItem extends Component {
@@ -20,3 +21,8 @@ export class ImageGalleryItem extends Component {
     });
   }
 }
+
+ImageGalleryItem.propTypes = {
+  pics: PropTypes.array.isRequired,
+  onModalOpen: PropTypes.func.isRequired,
+};

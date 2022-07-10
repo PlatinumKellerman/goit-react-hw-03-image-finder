@@ -4,12 +4,15 @@ import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled.js';
 export class ImageGalleryItem extends Component {
   render() {
     const picturesArray = this.props.pics;
-    return picturesArray.map(picture => {
+    return picturesArray.map(({ id, webformatURL, tags, largeImageURL }) => {
       return (
-        <GalleryItem key={picture.id} onClick={this.props.onModalOpen}>
+        <GalleryItem key={id}>
           <GalleryImage
-            src={picture.webformatURL}
-            alt={picture.tags}
+            onClick={() => {
+              this.props.onModalOpen(largeImageURL);
+            }}
+            src={webformatURL}
+            alt={tags}
             loading="lazy"
           ></GalleryImage>
         </GalleryItem>

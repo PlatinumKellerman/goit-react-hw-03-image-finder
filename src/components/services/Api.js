@@ -32,5 +32,5 @@ export async function getPic(currentImgName, currentPage, totalHits) {
     );
   }
 
-  return response.data.hits;
+  return response.data;
 }

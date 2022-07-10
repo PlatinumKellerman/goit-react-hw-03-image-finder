@@ -16,7 +16,6 @@ export class App extends Component {
     currentPage: 1,
     totalPages: null,
     totalHits: null,
-    largeImageURL: '',
   };
 
   handleImageNameSubmit = pictureName => {
@@ -52,15 +51,13 @@ export class App extends Component {
     getPic(currentImgName, currentPage)
       .then(pics => {
         this.setState(prevState => ({
-          picturesArray: [...prevState.picturesArray, ...pics],
+          picturesArray: [...prevState.picturesArray, ...pics.hits],
           totalPages: options.params.totalPages,
           totalHits: options.params.totalHits,
         }));
-        const largeImg = pics.map(pic => {
-          return pic.largeImageURL;
-        });
-        this.setState({ largeImageURL: largeImg });
-        console.log(this.state.largeImageURL);
+        if (currentPage === 1 && pics.total > 0) {
+          toast.success(`Found ${pics.total} images!!!`);
+        }
       })
       .catch(error => console.log(error))
       .finally(() => this.setState({ isLoading: false }));

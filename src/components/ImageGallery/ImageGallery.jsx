@@ -10,8 +10,11 @@ export class ImageGallery extends Component {
     largeImageURL: '',
   };
 
-  onModalOpen = () => {
-    this.setState({ isOpen: true });
+  onModalOpen = largeImageURL => {
+    this.setState({
+      isOpen: true,
+      largeImageURL: largeImageURL,
+    });
   };
 
   onModalClose = () => {
@@ -20,7 +23,10 @@ export class ImageGallery extends Component {
 
   render() {
     const NumberOfPics = this.props.pics.length;
+
     const totalHits = this.props.totalHits;
+    const largeImageURL = this.state.largeImageURL;
+    const tags = this.props.tags;
     return (
       <>
         <GalleryList>
@@ -32,7 +38,13 @@ export class ImageGallery extends Component {
         {NumberOfPics >= 12 && NumberOfPics < totalHits && (
           <LoadMoreButton loadMore={this.props.loadMore} />
         )}
-        {this.state.isOpen && <Modal onClose={this.onModalClose} />}
+        {this.state.isOpen && (
+          <Modal
+            onClose={this.onModalClose}
+            largeImageURL={largeImageURL}
+            tags={tags}
+          />
+        )}
       </>
     );
   }

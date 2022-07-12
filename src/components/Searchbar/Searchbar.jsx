@@ -1,6 +1,5 @@
-import { Component } from 'react';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Formik } from 'formik';
+import * as yup from 'yup';
 import { FcSearch } from 'react-icons/fc';
 import {
   StyledHeader,
@@ -10,31 +9,25 @@ import {
 } from './Searchbar.styled';
 import PropTypes from 'prop-types';
 
-export class Searchbar extends Component {
-  state = {
-    pictureName: '',
-    currentPage: 1,
+export function Searchbar({ onSubmit }) {
+  const schema = yup.object().shape({
+    name: yup.string().required('This field cannot be empty'),
+  });
+
+  const handleSubmit = (values, { resetForm }) => {
+    onSubmit(values.name);
+    resetForm();
   };
 
-  handlePictureNameChagne = e => {
-    this.setState({ pictureName: e.currentTarget.value.toLowerCase() });
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-    if (this.state.pictureName.trim() === '') {
-      toast.error('This field cannot be empty ;)');
-      return;
-    }
-    this.props.onSubmit(this.state.pictureName, this.state.currentPage);
-    e.target.reset();
-  };
-
-  render() {
-    return (
-      <>
+  return (
+    <>
+      <Formik
+        initialValues={{ name: '' }}
+        validationSchema={schema}
+        onSubmit={handleSubmit}
+      >
         <StyledHeader>
-          <SearchForm onSubmit={this.handleSubmit}>
+          <SearchForm>
             <SearchFormButton type="submit">
               <FcSearch size={32} />
             </SearchFormButton>
@@ -44,13 +37,12 @@ export class Searchbar extends Component {
               autoComplete="off"
               autoFocus
               placeholder="Search images and photos"
-              onChange={this.handlePictureNameChagne}
             />
           </SearchForm>
         </StyledHeader>
-      </>
-    );
-  }
+      </Formik>
+    </>
+  );
 }
 
 Searchbar.propTypes = {

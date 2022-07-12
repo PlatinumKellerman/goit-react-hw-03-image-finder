@@ -1,26 +1,26 @@
 import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { AppContainer } from './components/services/AppContainer/index';
+import { Container } from './components/Container/index';
 import { Searchbar } from './components/Searchbar/index';
 import { ImageGallery } from './components/ImageGallery/index';
-import { getPic, options } from './components/services/Api';
+import { getPic, options } from './services/api';
 import { Loader } from 'components/Loader/index';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export class App extends Component {
   state = {
-    pictureName: '',
-    picturesArray: [],
+    name: '',
+    pictures: [],
     isLoading: false,
     currentPage: 1,
     totalPages: null,
     totalHits: null,
   };
 
-  handleImageNameSubmit = pictureName => {
-    if (pictureName !== this.state.pictureName) {
-      this.setState({ pictureName, currentPage: 1, picturesArray: [] });
+  handleImageNameSubmit = name => {
+    if (name !== this.state.name) {
+      this.setState({ name, currentPage: 1, pictures: [] });
     }
   };
 
@@ -34,8 +34,8 @@ export class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const prevImgName = prevState.pictureName;
-    const currentImgName = this.state.pictureName;
+    const prevImgName = prevState.name;
+    const currentImgName = this.state.name;
     const prevPage = prevState.currentPage;
     const currentPage = this.state.currentPage;
     if (currentImgName !== prevImgName || prevPage !== currentPage) {
@@ -44,33 +44,34 @@ export class App extends Component {
     }
   }
 
-  fetchPictures = () => {
-    const currentImgName = this.state.pictureName;
-    const currentPage = this.state.currentPage;
-
-    getPic(currentImgName, currentPage)
-      .then(pics => {
+  fetchPictures = async () => {
+    try {
+      const currentImgName = this.state.name;
+      const currentPage = this.state.currentPage;
+      await getPic(currentImgName, currentPage).then(pics => {
         this.setState(prevState => ({
-          picturesArray: [...prevState.picturesArray, ...pics.hits],
+          pictures: [...prevState.pictures, ...pics.hits],
           totalPages: options.params.totalPages,
           totalHits: options.params.totalHits,
+          isLoading: false,
         }));
         if (currentPage === 1 && pics.total > 0) {
           toast.success(`Found ${pics.total} images!!!`);
         }
-      })
-      .catch(error => console.log(error))
-      .finally(() => this.setState({ isLoading: false }));
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   render() {
-    const { totalHits, picturesArray, totalPages } = this.state;
+    const { totalHits, pictures, totalPages } = this.state;
     return (
-      <AppContainer>
+      <Container>
         <Searchbar onSubmit={this.handleImageNameSubmit} />
-        {this.state.picturesArray.length > 0 && (
+        {this.state.pictures.length > 0 && (
           <ImageGallery
-            pics={picturesArray}
+            pics={pictures}
             loadMore={this.loadMore}
             totalHits={totalHits}
             totalPages={totalPages}
@@ -78,7 +79,7 @@ export class App extends Component {
         )}
         {this.state.isLoading && <Loader />}
         <ToastContainer autoClose={3000} />
-      </AppContainer>
+      </Container>
     );
   }
 }

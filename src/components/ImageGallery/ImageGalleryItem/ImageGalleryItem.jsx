@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled.js';
+import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled';
 
 export class ImageGalleryItem extends Component {
   render() {

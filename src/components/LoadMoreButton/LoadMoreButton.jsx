@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 export const LoadMoreButton = props => {
   return (
     <>
-      <LoadButton onClick={props.loadMore}>
-        <span>Load more</span>
-      </LoadButton>
+      <LoadButton onClick={props.loadMore}>{props.text}</LoadButton>
     </>
   );
 };

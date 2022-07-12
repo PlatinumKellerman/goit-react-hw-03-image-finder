@@ -1,4 +1,4 @@
-import { ImageGalleryItem } from '../ImageGalleryItem/index';
+import { ImageGalleryItem } from './ImageGalleryItem/index';
 import { GalleryList } from './ImageGallery.styled';
 import { LoadMoreButton } from '../LoadMoreButton/index';
 import { Modal } from '../Modal/index';
@@ -32,7 +32,7 @@ export class ImageGallery extends Component {
           <ImageGalleryItem pics={pics} onModalOpen={this.onModalOpen} />
         </GalleryList>
         {NumberOfPics >= 12 && NumberOfPics < totalHits && (
-          <LoadMoreButton loadMore={loadMore} />
+          <LoadMoreButton loadMore={loadMore} text={'Load more'} />
         )}
         {this.state.isOpen && (
           <Modal

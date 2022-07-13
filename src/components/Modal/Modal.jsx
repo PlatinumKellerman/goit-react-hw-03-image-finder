@@ -24,8 +24,7 @@ export class Modal extends Component {
   }
 
   render() {
-    const largeImageURL = this.props.largeImageURL;
-    const tags = this.props.tags;
+    const { largeImageURL, tags } = this.props;
     return (
       <Overlay onClick={this.handleMouseClickClose}>
         <ModalDiv>

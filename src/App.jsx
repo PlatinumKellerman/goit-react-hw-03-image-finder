@@ -18,6 +18,17 @@ export class App extends Component {
     totalHits: null,
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    const prevImgName = prevState.name;
+    const currentImgName = this.state.name;
+    const prevPage = prevState.currentPage;
+    const currentPage = this.state.currentPage;
+    if (currentImgName !== prevImgName || prevPage !== currentPage) {
+      this.setState({ isLoading: true });
+      this.fetchPictures();
+    }
+  }
+
   handleImageNameSubmit = name => {
     if (name !== this.state.name) {
       this.setState({ name, currentPage: 1, pictures: [] });
@@ -32,17 +43,6 @@ export class App extends Component {
       toast.error('End of gallery');
     }
   };
-
-  componentDidUpdate(prevProps, prevState) {
-    const prevImgName = prevState.name;
-    const currentImgName = this.state.name;
-    const prevPage = prevState.currentPage;
-    const currentPage = this.state.currentPage;
-    if (currentImgName !== prevImgName || prevPage !== currentPage) {
-      this.setState({ isLoading: true });
-      this.fetchPictures();
-    }
-  }
 
   fetchPictures = async () => {
     try {
